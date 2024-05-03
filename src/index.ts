@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 
 import routes from './routes';
+import { connectDB } from './libs/db';
 
 dotenv.config();
 
@@ -16,6 +17,13 @@ app.use('/', routes);
 if (process.env.IS_LOCAL) {
   app.listen(PORT, async () => {
     console.log(`Server listening on port ${PORT}`);
+    await connectDB();
+    console.log(`Database connected`);
+  });
+} else {
+  app.use(async (req, res, next) => {
+    await connectDB();
+    next();
   });
 }
 
