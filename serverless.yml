@@ -1,0 +1,11 @@
+service: nodejs-aws-lambda
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: sa-east-1
+functions:
+  app:
+    handler: dist/index.handler
+    events:
+      - http: ANY /
+      - http: ANY /{proxy+}

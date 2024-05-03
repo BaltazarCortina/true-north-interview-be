@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import serverless from 'serverless-http';
 
 import routes from './routes';
 import { connectDB } from './db';
@@ -26,5 +27,7 @@ if (process.env.IS_LOCAL) {
     next();
   });
 }
+
+export const handler = serverless(app);
 
 export default app;
