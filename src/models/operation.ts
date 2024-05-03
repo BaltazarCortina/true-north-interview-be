@@ -1,6 +1,6 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose, { Schema, mongo } from 'mongoose';
 
-enum OperationType {
+export enum OperationType {
   ADDITION = 'ADDITION',
   SUBTRACTION = 'SUBTRACTION',
   MULTIPLICATION = 'MULTIPLICATION',
@@ -24,6 +24,7 @@ const operationSchema = new Schema(
   { timestamps: true }
 );
 
-export type Operation = mongoose.InferSchemaType<typeof operationSchema>;
+type OperationSchemaType = mongoose.InferSchemaType<typeof operationSchema>;
+export type Operation = OperationSchemaType & { _id: mongoose.Types.ObjectId };
 
 export default mongoose.model<Operation>('Operation', operationSchema);

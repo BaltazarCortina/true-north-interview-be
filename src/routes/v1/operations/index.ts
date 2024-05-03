@@ -1,9 +1,11 @@
 import { Router } from 'express';
 
-import { getOperations } from './controller';
+import { getOperations, postOperation } from './controller';
 
 const router = Router();
 
-router.get('/', getOperations)
+router
+  .get('/', getOperations)
+  .post('/', postOperation);
 
 export default router;
