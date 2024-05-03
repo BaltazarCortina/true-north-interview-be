@@ -1,11 +1,9 @@
 import { Router } from 'express';
 
-import { getOperations, postOperation } from './controller';
+import { getOperations } from './controller';
 
 const router = Router();
 
-router
-  .get('/', getOperations)
-  .post('/', postOperation);
+router.get('/', getOperations);
 
 export default router;
