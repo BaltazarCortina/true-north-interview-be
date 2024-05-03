@@ -1,7 +1,8 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import { getOperationByTypeFromDb, getOperationsFromDb } from '../../../db/operations';
 import { createNewRecordInDb, getUserRecordsFromDb } from '../../../db/records';
-import { validateUserCredit } from '../../../utils';
+import { performOperation, validateUserCredit } from '../../../utils';
+import type { OperationType } from '../../../models/operation';
 
 export const getOperations = async (req: Request, res: Response) => {
   const operations = await getOperationsFromDb();
@@ -30,9 +31,9 @@ export const postOperation = async (req: Request, res: Response) => {
     return res.status(403).send('Insufficient credits');
   }
 
-  // TODO: Perform operation
+  const operationResult = await performOperation(operation.type as OperationType, 0, 0); // TODO: Validate input and type correctly
 
-  createNewRecordInDb(operation, userId, remainingCredits, 0); // Add operation response
+  createNewRecordInDb(operation, userId, remainingCredits, operationResult);
 
-  return res.send('Success');
+  return res.json({ msg:'Success', result: operationResult });
 };

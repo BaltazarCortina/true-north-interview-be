@@ -9,7 +9,7 @@ export const createNewRecordInDb = async (
   operation: Operation,
   userId: string,
   userBalance: number,
-  operationResponse: number
+  operationResponse: number | string,
 ) => {
   const newRecord = new RecordSchema({
     operationId: operation._id,

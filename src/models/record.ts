@@ -21,7 +21,7 @@ const recordSchema = new Schema(
       required: true,
     },
     operationResponse: {
-      type: Number,
+      type: String,
       required: true,
     },
     date: {
