@@ -9,6 +9,7 @@ import {
 import { performOperation, validateUserCredit } from '../../../utils';
 import { IdAsParam } from '../../../utils/schema';
 import { GetRecordsPaginatedQuery, NewRecordBody } from './schema';
+import { parseRecords } from '../../../helpers/parsers';
 
 export const getRecords = async (req: Request, res: Response) => {
   try {
@@ -18,7 +19,7 @@ export const getRecords = async (req: Request, res: Response) => {
     const paginatedRecords = await getPaginatedUserRecordsFromDb(id, page, limit);
 
     const data = {
-      docs: paginatedRecords.docs,
+      docs: parseRecords(paginatedRecords.docs),
       totalDocs: paginatedRecords.totalDocs,
     };
 

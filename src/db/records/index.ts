@@ -1,12 +1,16 @@
 import { Operation } from '../../models/operation';
 import RecordSchema from '../../models/record';
+import { PopulatedRecord } from '../../types';
 
 export const getPaginatedUserRecordsFromDb = async (
   userId: string,
   page: number,
   limit: number
 ) => {
-  return RecordSchema.paginate({ userId }, { page, limit, populate: 'operationId', lean: true });
+  return RecordSchema.paginate<PopulatedRecord>(
+    { userId },
+    { page, limit, populate: 'operationId', lean: true }
+  );
 };
 
 export const getUserRecordsFromDb = async (userId: string) => {
