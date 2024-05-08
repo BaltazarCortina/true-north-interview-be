@@ -10,6 +10,6 @@ export const NewRecordBody = z.object({
 });
 
 export const GetRecordsPaginatedQuery = z.object({
-  page: z.number().int().positive(),
-  limit: z.number().int().positive(),
+  page: z.coerce.number().int().positive(),
+  limit: z.coerce.number().int().positive(),
 });
