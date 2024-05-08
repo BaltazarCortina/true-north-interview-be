@@ -1,3 +1,4 @@
+import cors from 'cors';
 import express from 'express';
 import dotenv from 'dotenv';
 import serverless from 'serverless-http';
@@ -7,11 +8,13 @@ import { connectDB } from './db';
 
 dotenv.config();
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded());
 
 app.use('/', routes);
 

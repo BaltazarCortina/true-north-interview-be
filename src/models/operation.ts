@@ -1,4 +1,4 @@
-import mongoose, { Schema, mongo } from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
 
 export enum OperationType {
   ADDITION = 'ADDITION',
@@ -25,6 +25,10 @@ const operationSchema = new Schema(
 );
 
 type OperationSchemaType = mongoose.InferSchemaType<typeof operationSchema>;
-export type Operation = OperationSchemaType & { _id: mongoose.Types.ObjectId };
+
+export interface Operation extends Omit<OperationSchemaType, 'type'> {
+  _id: mongoose.Types.ObjectId;
+  type: OperationType;
+}
 
 export default mongoose.model<Operation>('Operation', operationSchema);

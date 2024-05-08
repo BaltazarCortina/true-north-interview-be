@@ -1,4 +1,5 @@
 import mongoose, { Schema } from 'mongoose';
+import paginate from 'mongoose-paginate-v2';
 
 const recordSchema = new Schema(
   {
@@ -37,7 +38,9 @@ const recordSchema = new Schema(
   { timestamps: true }
 );
 
+recordSchema.plugin(paginate);
+
 export type RecordSchemaType = mongoose.InferSchemaType<typeof recordSchema>;
 export type Record = RecordSchemaType & { _id: mongoose.Types.ObjectId };
 
-export default mongoose.model<Record>('Record', recordSchema);
+export default mongoose.model<Record, mongoose.PaginateModel<Record>>('Record', recordSchema);

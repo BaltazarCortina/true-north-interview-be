@@ -4,8 +4,8 @@ import { getRecords, postRecord } from './controller';
 
 const router = Router();
 
-router
-  .get('/', getRecords)
-  .post('/', postRecord);
+router.post('/', postRecord);
+
+router.get('/:id', getRecords);
 
 export default router;
