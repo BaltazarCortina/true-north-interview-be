@@ -5,6 +5,7 @@ import serverless from 'serverless-http';
 
 import routes from './routes';
 import { connectDB } from './db';
+import { initFirebaseApp } from './lib/firebase';
 
 dotenv.config();
 
@@ -23,10 +24,12 @@ if (process.env.IS_LOCAL) {
     console.log(`Server listening on port ${PORT}`);
     await connectDB();
     console.log(`Database connected`);
+    initFirebaseApp();
   });
 } else {
   app.use(async (req, res, next) => {
     await connectDB();
+    initFirebaseApp();
     next();
   });
 }

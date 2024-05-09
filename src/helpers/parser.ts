@@ -1,4 +1,4 @@
-import { PopulatedRecord } from '../../types';
+import { PopulatedRecord } from '../types';
 
 export const parseRecords = (records: PopulatedRecord[]) => {
   return records.map((record) => {

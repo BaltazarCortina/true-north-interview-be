@@ -7,7 +7,7 @@ const userSchema = new Schema(
       required: true,
       unique: true,
     },
-    password: {
+    firebaseUid: {
       type: String,
       required: true,
     },

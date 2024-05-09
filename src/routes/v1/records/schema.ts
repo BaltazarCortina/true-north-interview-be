@@ -4,7 +4,6 @@ import { OperationType } from '../../../models/operation';
 
 export const NewRecordBody = z.object({
   type: z.nativeEnum(OperationType),
-  userId: z.string(),
   firstNumber: z.number(),
   secondNumber: z.number().optional(),
 });

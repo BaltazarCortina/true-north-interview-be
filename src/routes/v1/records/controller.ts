@@ -6,17 +6,18 @@ import {
   getPaginatedUserRecordsFromDb,
   getUserRecordsFromDb,
 } from '../../../db/records';
-import { performOperation, validateUserCredit } from '../../../utils';
-import { IdAsParam } from '../../../utils/schema';
+import { performOperation, validateUserCredit } from '../../../helpers';
 import { GetRecordsPaginatedQuery, NewRecordBody } from './schema';
-import { parseRecords } from '../../../helpers/parsers';
+import { parseRecords } from '../../../helpers/parser';
+import { getAuthUserId } from '../../../utils';
 
 export const getRecords = async (req: Request, res: Response) => {
   try {
-    const { id } = IdAsParam.parse(req.params);
+    const userId = getAuthUserId(res.locals);
+    console.log('userId', userId);
     const { page, limit } = GetRecordsPaginatedQuery.parse(req.query);
 
-    const paginatedRecords = await getPaginatedUserRecordsFromDb(id, page, limit);
+    const paginatedRecords = await getPaginatedUserRecordsFromDb(userId, page, limit);
 
     const data = {
       docs: parseRecords(paginatedRecords.docs),
@@ -31,9 +32,11 @@ export const getRecords = async (req: Request, res: Response) => {
 
 export const postRecord = async (req: Request, res: Response) => {
   try {
+    const userId = getAuthUserId(res.locals);
+
     const body = NewRecordBody.parse(req.body);
 
-    const { type, userId, firstNumber, secondNumber } = body;
+    const { type, firstNumber, secondNumber } = body;
 
     const [operation, userRecords] = await Promise.all([
       getOperationByTypeFromDb(type),
