@@ -11,4 +11,6 @@ export const NewRecordBody = z.object({
 export const GetRecordsPaginatedQuery = z.object({
   page: z.coerce.number().int().positive(),
   limit: z.coerce.number().int().positive(),
+  filter: z.nativeEnum(OperationType).or(z.literal('-')),
+  search: z.string().optional(),
 });

@@ -1,16 +1,31 @@
+import { FilterQuery } from 'mongoose';
+
 import { Operation } from '../../models/operation';
-import RecordSchema from '../../models/record';
+import RecordSchema, { Record } from '../../models/record';
 import { PopulatedRecord } from '../../types';
 
 export const getPaginatedUserRecordsFromDb = async (
   userId: string,
   page: number,
-  limit: number
+  limit: number,
+  operationId?: string,
+  search?: string
 ) => {
-  return RecordSchema.paginate<PopulatedRecord>(
-    { userId, logicDelete: false },
-    { page, limit, populate: 'operationId', lean: true }
-  );
+  const query: FilterQuery<Record> = {
+    logicDelete: false,
+    userId,
+  };
+
+  if (operationId) query.operationId = operationId;
+
+  if (search) query.date = { $regex: search, $options: 'i' };
+
+  return RecordSchema.paginate<PopulatedRecord>(query, {
+    page,
+    limit,
+    populate: 'operationId',
+    lean: true,
+  });
 };
 
 export const getUserRecordsFromDb = async (userId: string) => {
@@ -30,7 +45,7 @@ export const createNewRecordInDb = async (
     amount: operation.cost,
     userBalance,
     operationResponse,
-    date: new Date(),
+    date: new Date().toUTCString(),
   });
 
   return newRecord.save();

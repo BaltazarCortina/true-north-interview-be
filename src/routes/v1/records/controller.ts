@@ -16,9 +16,17 @@ import { IdAsParam } from '../../../utils/schema';
 export const getRecords = async (req: Request, res: Response) => {
   try {
     const userId = getAuthUserId(res.locals);
-    const { page, limit } = GetRecordsPaginatedQuery.parse(req.query);
+    const { page, limit, filter, search } = GetRecordsPaginatedQuery.parse(req.query);
 
-    const paginatedRecords = await getPaginatedUserRecordsFromDb(userId, page, limit);
+    const operation = filter !== '-' ? await getOperationByTypeFromDb(filter) : undefined;
+
+    const paginatedRecords = await getPaginatedUserRecordsFromDb(
+      userId,
+      page,
+      limit,
+      operation?._id.toString(),
+      search
+    );
 
     const data = {
       docs: parseRecords(paginatedRecords.docs),
