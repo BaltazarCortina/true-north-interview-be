@@ -1,10 +1,13 @@
 import { Router } from 'express';
 
+import { checkToken } from '../../middleware/check-token';
+import authRoutes from './auth';
 import operationsRoutes from './operations';
 import recordsRoutes from './records';
-import { checkToken } from '../../middleware/check-token';
 
 const router = Router();
+
+router.use('/auth', authRoutes);
 
 router.use('/operations', operationsRoutes);
 
