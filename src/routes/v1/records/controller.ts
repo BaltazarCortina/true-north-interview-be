@@ -3,6 +3,7 @@ import type { Request, Response } from 'express';
 import { getOperationByTypeFromDb } from '../../../db/operations';
 import {
   createNewRecordInDb,
+  deleteUserRecordFromDb,
   getPaginatedUserRecordsFromDb,
   getUserRecordsFromDb,
 } from '../../../db/records';
@@ -10,11 +11,11 @@ import { performOperation, validateUserCredit } from '../../../helpers';
 import { GetRecordsPaginatedQuery, NewRecordBody } from './schema';
 import { parseRecords } from '../../../helpers/parser';
 import { getAuthUserId } from '../../../utils';
+import { IdAsParam } from '../../../utils/schema';
 
 export const getRecords = async (req: Request, res: Response) => {
   try {
     const userId = getAuthUserId(res.locals);
-    console.log('userId', userId);
     const { page, limit } = GetRecordsPaginatedQuery.parse(req.query);
 
     const paginatedRecords = await getPaginatedUserRecordsFromDb(userId, page, limit);
@@ -58,6 +59,27 @@ export const postRecord = async (req: Request, res: Response) => {
     await createNewRecordInDb(operation, userId, remainingCredits, operationResult);
 
     return res.json({ status: 201, message: 'Success', data: operationResult });
+  } catch (error) {
+    return res.status(400).json({ error });
+  }
+};
+
+export const deleteRecord = async (req: Request, res: Response) => {
+  try {
+    const userId = getAuthUserId(res.locals);
+    const { id } = IdAsParam.parse(req.params);
+
+    const deletedRecord = await deleteUserRecordFromDb(userId, id);
+
+    if (!deletedRecord) {
+      return res
+        .status(404)
+        .send(
+          'Record could not be deleted, either it does not exist or it has already been deleted'
+        );
+    }
+
+    return res.json({ status: 200, message: 'Record deleted successfully' });
   } catch (error) {
     return res.status(400).json({ error });
   }

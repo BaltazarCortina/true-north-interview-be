@@ -8,7 +8,7 @@ export const getPaginatedUserRecordsFromDb = async (
   limit: number
 ) => {
   return RecordSchema.paginate<PopulatedRecord>(
-    { userId },
+    { userId, logicDelete: false },
     { page, limit, populate: 'operationId', lean: true }
   );
 };
@@ -34,4 +34,12 @@ export const createNewRecordInDb = async (
   });
 
   return newRecord.save();
+};
+
+export const deleteUserRecordFromDb = async (userId: string, recordId: string) => {
+  return RecordSchema.findOneAndUpdate(
+    { _id: recordId, userId, logicDelete: false },
+    { logicDelete: true },
+    { new: true }
+  ).lean();
 };
