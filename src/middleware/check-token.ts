@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { getAuth } from 'firebase-admin/auth';
+
 import User from '../models/user';
 
 export const checkToken = async (req: Request, res: Response, next: NextFunction) => {

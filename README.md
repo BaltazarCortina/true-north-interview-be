@@ -4,7 +4,7 @@ Backend for an Arithmetic Calculator App.
 
 ## Preview
 
-A preview deployment of this project can be found in [85fixbsqe2.execute-api.sa-east-1.amazonaws.com/dev](https://85fixbsqe2.execute-api.sa-east-1.amazonaws.com/dev/).
+A preview deployment of this project can be found [here](https://85fixbsqe2.execute-api.sa-east-1.amazonaws.com/dev/).
 
 ## Run the project
 
