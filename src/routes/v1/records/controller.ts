@@ -53,13 +53,13 @@ export const postRecord = async (req: Request, res: Response) => {
     ]);
 
     if (!operation) {
-      return res.status(404).send('Operation is not currently available');
+      return res.status(404).json({ message: 'Operation is not currently available' });
     }
 
     const { status, remainingCredits } = validateUserCredit(userRecords, operation.cost);
 
     if (!status) {
-      return res.status(403).send('Insufficient credits');
+      return res.status(403).json({ message: 'Insufficient credits' });
     }
 
     const operationResult = await performOperation(operation.type, firstNumber, secondNumber);
@@ -80,11 +80,10 @@ export const deleteRecord = async (req: Request, res: Response) => {
     const deletedRecord = await deleteUserRecordFromDb(userId, id);
 
     if (!deletedRecord) {
-      return res
-        .status(404)
-        .send(
-          'Record could not be deleted, either it does not exist or it has already been deleted'
-        );
+      return res.status(404).json({
+        message:
+          'Record could not be deleted, either it does not exist or it has already been deleted',
+      });
     }
 
     return res.json({ status: 200, message: 'Record deleted successfully' });
